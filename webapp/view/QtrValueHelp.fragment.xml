@@ -1,0 +1,15 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<SelectDialog
+		noDataText="No Quarters Found"
+		title="Select Quarter"
+		search=".onSearch"
+		confirm=".onValueHelpDialogClose"
+		cancel=".onValueHelpDialogClose"
+		items="{/CureDate}">
+		<StandardListItem			
+			title="{CharcValue}"
+			type="Active" />
+	</SelectDialog>
+</core:FragmentDefinition>

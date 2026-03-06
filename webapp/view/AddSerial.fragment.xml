@@ -1,0 +1,67 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+    <Dialog id="serialDialog"  title="{i18n>serialData}" titleAlignment="Center" stretch="{= ${device>/system/phone}}">
+        <content>
+            <FlexBox class="sapUiTinyMargin" alignContent="Stretch" alignItems="Stretch" visible="{glVarModel>/qtyVisible}">
+                <Label text="{i18n>recQty}" class="sapUiTinyMarginTop sapUiTinyMargin">
+                
+                </Label>
+                <Input value="{glModel>/ReceivedQty}" maxLength="20" type="Number" change="onQtyChange">
+                </Input>
+            </FlexBox>
+            <Toolbar >
+                <ObjectAttribute text="{glModel>/Material}" />
+                <ToolbarSpacer ></ToolbarSpacer>
+                <ObjectAttribute text="{btchView>/btchQty} {glModel>/PurchaseOrderQuantityUnit}" />
+                
+            </Toolbar>
+
+            <HBox>
+                <Label text="{i18n>from}" class="sapUiSmallMarginTop sapUiTinyMargin"></Label>
+                <Input value="{glVarModel>/serialFrom}" maxLength="18"  change="onSerialNoChange" liveChange="validateInput"></Input>
+                <Label text="{i18n>to}" class="sapUiSmallMarginTop sapUiTinyMargin"></Label>
+                <Input value="{glVarModel>/serialTo}"  type="Number" enabled="false"></Input>
+                <Button text="{i18n>generate}" class="sapUiTinyBegin" press="onSerialGenerate" />
+            </HBox>
+
+            <Table id="serialTable" items="{serialModel>/Serials}"  enableBusyIndicator="true" >
+                <headerToolbar>
+					<OverflowToolbar >
+                        <Title text="{i18n>serialDet}"></Title>
+                        <ToolbarSpacer/>
+						<Label text="{glVarModel>/filledCounter}/{btchView>/btchQty}"></Label>
+					</OverflowToolbar>
+				</headerToolbar>
+                <columns >
+                    <Column>
+                    </Column>
+                    
+                </columns>
+                <items>
+                    <ColumnListItem vAlign="Middle">
+                        <cells>
+                            <HBox >
+                            <Input value="{serialModel>Serialno}" change="onValueChange" maxLength="18" submit="onValueChange"/>
+                            <!-- <ndc:BarcodeScannerButton
+                                scanSuccess="onScanSuccess"
+                                scanFail="onScanError"
+                                dialogTitle="{i18n>barScan}"
+                                width="100%"
+                            /> -->
+                            </HBox>
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </content>
+        <buttons>
+            <Button type="Emphasized" press="onHandleSplitUpdate" text="{i18n>upd}" icon="sap-icon://share"
+                        class="sapUiTinyMarginTop sapUiTinyMarginBottom" visible="{= ${glModel>/flag} === 'Q' ? false : true}" />
+            <Button text="{i18n>gr}" icon="sap-icon://inventory" press="onCreateGR" type="Emphasized" 
+                        visible="{= ${glModel>/flag} === 'Q' ? true : false}"/>
+            <Button type="Emphasized" press="onClose" text="{i18n>cancel}" icon="sap-icon://sys-cancel"
+                        class="sapUiTinyMarginTop sapUiTinyMarginBottom" />
+        </buttons>
+    </Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,55 @@
+<mvc:View controllerName="com.eaton.dev.grcreate.controller.Home"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+    xmlns="sap.m">
+    <Page id="page"  title="{i18n>title}" backgroundDesign="List" titleAlignment="Center">
+        <content>
+
+		<f:SimpleForm id="SimpleForm" 
+			editable="true"
+			layout="ResponsiveGridLayout"
+			labelSpanXL="3"
+			labelSpanL="3"
+			labelSpanM="3"
+			labelSpanS="12"
+			adjustLabelSpan="false"
+			emptySpanXL="4"
+			emptySpanL="4"
+			emptySpanM="4"
+			emptySpanS="0"
+			columnsXL="1"
+			columnsL="1"
+			columnsM="1"
+			singleContainerFullSize="false" >
+			<f:content>
+            
+                    <Label text="{i18n>po}" required="true"  labelFor="pOrder" design="Bold" />
+                    <Input id="pOrder"  type="Number" value="{btchView>/po}" width="100%" maxLength="10" />
+                    <Label text="{i18n>poLine}"  labelFor="poItem" design="Bold" />
+                    <Input id="poLine"  type="Number" value="{btchView>/poLine}" maxLength="5" enabled="{btchView>/enbld}"/>
+                    <Label text="{i18n>pSlip}"  labelFor="pList" design="Bold"  required="true" />
+                    <Input id="pSlip"  value="{btchView>/pSlip}" maxLength='20' />
+                    <Label text="{i18n>material}"  labelFor="matInp" design="Bold" />
+                    <Input id="matInp"  value="{btchView>/mat}" maxLength="18" enabled="{btchView>/enbld}"/>
+                      <Label text="{i18n>matDesc}"  labelFor="matDesc" design="Bold"/>
+                    <Text id="matDesc" text="{btchView>/matDesc}"/>
+                    
+                    <Label text="{i18n>recQty}" design="Bold" required="true" visible="{btchView>/singleItem}"/>
+                    <Input value="{glModel>/ReceivedQty}" maxLength="20" type="Number" liveChange="validateInput" visible="{btchView>/singleItem}"/>
+                      <Label text="{i18n>printer}"  labelFor="printInp" design="Bold" />
+                    <Input id="printInp"  value="{btchView>/print}" maxLength="18" enabled="{btchView>/enbldPrint}"/>
+            </f:content>
+		</f:SimpleForm>
+        </content>
+        <footer>
+            <OverflowToolbar id="otbFooter">
+				<ToolbarSpacer/>
+                <Button text="{i18n>next}" icon="sap-icon://open-command-field" press="onGetData" type="Accept" visible="{=!${btchView>/singleItem}}"/>
+                <Button text="{i18n>gr}" icon="sap-icon://inventory" press="onCreateGR" type="Emphasized" visible="{btchView>/singleItem}"/>
+                <Button text="{i18n>clear}" icon="sap-icon://reset" press="onClearFields" type="Emphasized" />
+            </OverflowToolbar>
+        </footer>
+    </Page>
+</mvc:View>

@@ -1,0 +1,31 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+    xmlns:ndc="sap.ndc"
+	xmlns:core="sap.ui.core">
+    <Dialog id="msgDialog"  title="Result" titleAlignment="Center" contentHeight ="50%"    verticalScrolling= 'false'>
+        <customHeader>
+            <Bar  >
+                <contentLeft>
+                    <Button id="btnBack" icon = 'sap-icon://nav-back' visible="false" press="onMsgBack"/>
+                </contentLeft>
+                <contentMiddle>
+                    <Text text="{i18n>msgTitle}" />
+                </contentMiddle> 
+            </Bar>
+        </customHeader>
+        
+        <content>
+            <MessageView items="{message>/Messages}" id="idMsgBack" showDetailsPageHeader="false" itemSelect="onItemSelect" >
+                <MessageItem 
+                    type="{path: 'message>severity', formatter:'.formatter.messageType'}" 
+                    title="{message>message}"  
+                    description="{message>message}" >
+                </MessageItem>
+		    </MessageView>
+        </content>
+        <buttons>
+            <Button type="Emphasized" press="onMsgClose" text="{i18n>ok}"
+                        class="sapUiTinyMarginTop sapUiTinyMarginBottom" />
+        </buttons>
+    </Dialog>
+</core:FragmentDefinition>

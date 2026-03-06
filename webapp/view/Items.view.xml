@@ -1,0 +1,62 @@
+<mvc:View controllerName="com.eaton.dev.grcreate.controller.Items"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+    xmlns="sap.m">
+    <Page title="{i18n>itmDet} {btchView>/po}" backgroundDesign="List" id="itemPage" titleAlignment="Center">
+        <content>
+            <Table id="idPOTable" inset="false" mode="SingleSelectMaster" growing="true" growingThreshold="500" growingScrollToLoad="true"
+                items="{
+                    path : '/OpenPoItems',          
+                    sorter : {     
+                        path : 'ScheduleLineDeliveryDate'
+                    }
+                }"
+                selectionChange="onItemSelection">
+                <columns>
+                    <Column>
+                        <Text text="{i18n>poLine}" />
+                    </Column>
+                    <Column>
+                        <Text text="{i18n>material}" />
+                    </Column>
+                    <Column>
+                        <Text text="{i18n>shrtxt}" />
+                    </Column>
+                    <Column
+                        minScreenWidth="Desktop"
+                        demandPopin="true">
+                        <Text text="{i18n>recQty}" />
+                    </Column>
+                    <!-- <Column
+                        minScreenWidth="Desktop"
+                        demandPopin="true"
+                        hAlign="Center">
+                        <Text text="{i18n>uom}" />
+                    </Column> -->
+                </columns>
+                <items>
+                    <ColumnListItem vAlign="Middle">
+                        <cells>
+                            <ObjectIdentifier title="{PurchaseOrderItem}"/>
+                            <Text text="{Material}" />
+                            <Text text="{ItemText}" />
+                            <HBox >
+                                <Input value="{ReceivedQty}" maxLength="20" type="Number" change="onInpQtyChange"></Input>
+                                <Text text="{PurchaseOrderQuantityUnit}" class="sapUiSmallMargin"></Text>
+                            </HBox>
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </content>
+        <footer>
+            <OverflowToolbar id="itemFooter">
+				<ToolbarSpacer/>
+                <Button text="{i18n>upd}"  press="onUpdate" icon="sap-icon://share" type="Accept" enabled="{btchView>/updFlag}"/>
+                <Button text="{i18n>gr}" icon="sap-icon://inventory" press="onCreateGR" type="Emphasized" enabled="{btchView>/grFlag}"/>
+            </OverflowToolbar>
+        </footer>
+    </Page>
+</mvc:View>

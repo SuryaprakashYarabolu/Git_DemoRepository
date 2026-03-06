@@ -1,0 +1,164 @@
+<mvc:View controllerName="com.eaton.dev.grcreate.controller.Batch"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+    xmlns="sap.m">
+    <Page title="{i18n>bthTitle}" backgroundDesign="List" titleAlignment="Center" >
+        <content>
+            <f:SimpleForm id="bthForm" 
+                visible="true"
+                editable="true"
+                layout="ResponsiveGridLayout"	
+                labelSpanXL="3"
+                labelSpanL="3"
+                labelSpanM="3"
+                labelSpanS="3"
+                adjustLabelSpan="false"
+                emptySpanXL="4"
+                emptySpanL="4"
+                emptySpanM="0"
+                emptySpanS="0"
+                columnsXL="1"
+                columnsL="1"
+                columnsM="1"
+                singleContainerFullSize="false" >
+                <f:content>
+                    <Label text="{i18n>po}"  labelFor="po" design="Bold"/>
+                    <Text id="po" text="{btchView>/po}"/>
+                    <Label text="{i18n>poLine}"  labelFor="poLine" design="Bold"/>
+                    <Text id="poLine" text="{btchView>/poLine}"/>
+
+                     <Label text="{i18n>material}"  labelFor="material" design="Bold"/>
+                    <Text id="material" text="{btchView>/mat}"/>
+
+                     <Label text="{i18n>matDesc}"  labelFor="matDesc" design="Bold"/>
+                    <Text id="matDesc" text="{btchView>/matDesc}"/>
+
+                    <Label text="{i18n>recQty}"  required="true" labelFor="recQty" design="Bold"/>
+                    <Input id="recQty" value="{glModel>/ReceivedQty}" type="Number" maxLength="20" change="onQtyChange"></Input>
+
+                    <CheckBox id="idSplitCheck" text="{i18n>split}" select="handleBatchSplit" />
+                    
+                    <Label text="{i18n>batch}"  labelFor="batch" design="Bold" visible="{= ${btchView>/split} === 'X' ? false : true}"/>
+                    <Text id="batch" text="{btchView>/btch}" visible="{= ${btchView>/split} === 'X' ? false : true}"/>
+               
+                    <Label text="{i18n>btchQty}"  labelFor="btchQty" design="Bold" visible="{= ${btchView>/split} === 'X' ? false : true}"/>
+                    <Text id="btchQty" text="{btchView>/btchQty}" visible="{= ${btchView>/split} === 'X' ? false : true}"/>
+                
+                    <Label text="{i18n>curDate}"  labelFor="cureQtr" design="Bold" required="true"
+                        visible="{parts: [{path: 'btchView>/split'}, {path: 'glModel>/batchFldInd'}], formatter:'.formatter.curDateVisibility'}" />
+                                                                                    
+                    <Input id="curDate" type="Text"  showValueHelp="true" maxLength="4" change="onQtrChange"
+                     valueHelpRequest="onQtrValueHelp" value="{btchView>/curDate}" visible="{parts: [{path: 'btchView>/split'}, {path: 'glModel>/batchFldInd'}], formatter:'.formatter.curDateVisibility'}" />
+             
+                    <Label text="{i18n>mfrDate}"  labelFor="mfrDate" design="Bold" 
+                        visible="{parts: [{path: 'btchView>/split'}, {path: 'glModel>/batchFldInd'}], formatter:'.formatter.mfrDateVisibility'}" />
+                    
+
+                    <DatePicker id="mfrDate" class="sapUiSmallMarginBottom" 
+                    change="onMfrDateChange" 
+                    value="{
+						path:'btchView>/mfrDate',
+						type:'sap.ui.model.type.Date',
+						formatOptions: {
+							style: 'medium',
+							strictParsing: true,
+                            UTC:true
+						}
+					}"
+                    visible="{parts: [{path: 'btchView>/split'}, {path: 'glModel>/batchFldInd'}], formatter:'.formatter.mfrDateVisibility'}" />
+
+                <Label text="{i18n>expDate}"  labelFor="expDate" design="Bold"
+                        visible="{parts: [{path: 'btchView>/split'}, {path: 'glModel>/batchFldInd'}], formatter:'.formatter.expDateVisibility'}" />
+                    
+
+                    <DatePicker  id="expDate" class="sapUiSmallMarginBottom" 
+                    change="onExpDateChange" 
+                    value="{
+						path:'btchView>/expDate',
+						type:'sap.ui.model.type.Date',
+						formatOptions: {
+							style: 'medium',
+							strictParsing: true,
+                            UTC:true
+						}
+					}"
+                    visible="{parts: [{path: 'btchView>/split'}, {path: 'glModel>/batchFldInd'}], formatter:'.formatter.expDateVisibility'}" />
+
+                    <!--Begin added Destination bin by Rohan -->
+                     <Label text="{i18n>Destination Bin}"  labelFor="pList" design="Bold"  required="false" />
+                     <Input id="strBin"  value="{btchView>/strBin}" maxLength='60' />
+                    <!-- end of added Destination bin by Rohan -->
+
+                    <Label ></Label>
+                    <Button text="{i18n>addSerial}" press="onAddSerial" icon="sap-icon://numbered-text"  visible="{parts: [{path: 'btchView>/split'}, {path: 'glModel>/flag'}], formatter:'.formatter.serialVisibility'}"/>
+                    
+            </f:content>
+		</f:SimpleForm>
+        <Table id="idBatchTable" inset="false" mode="Delete"  items="{dataModel>/batches}" 
+            delete="onBatchDelete"    visible="{= ${btchView>/split} === 'X' ? true : false}">
+            <headerToolbar>
+				<OverflowToolbar>
+					<Title text="{i18n>btchSplit}" level="H2"/>
+					<ToolbarSpacer/>
+					<Button
+						tooltip="Sort"
+						icon="sap-icon://add"
+						press="handleAddSplitRow" />
+				</OverflowToolbar>
+			</headerToolbar>
+                <columns>
+                    <Column >
+                    </Column>
+                    <Column visible="{= ${glModel>/batchFldInd} === 'C' ? true: false}"> 
+                    </Column>
+                    <Column visible="{= ${glModel>/batchFldInd} === 'M' ? true: false}">
+                    </Column>
+                    <Column
+                        minScreenWidth="Desktop"
+                        demandPopin="true">
+                        <Text text="{i18n>btchQty}" />
+                    </Column>
+                    <Column
+                        minScreenWidth="Desktop"
+                        demandPopin="true"
+                        hAlign="End">
+                        
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem vAlign="Middle">
+                        <cells>
+                            <ObjectIdentifier title="{dataModel>Batch}"/>
+                            <Input  type="Text" placeholder="{i18n>chQtr}" showValueHelp="true" required="true" maxLength="4" change="onQtrChange"
+                                valueHelpRequest="onQtrValueHelp" value="{dataModel>Curedate}"
+                                visible="{= ${glModel>/batchFldInd} === 'C' ? true: false}"/>
+                            <DatePicker  required="true"
+                                value="{
+                                    path:'dataModel>Manufacturedate',
+                                    type:'sap.ui.model.type.Date',
+                                    formatOptions: {
+                                        style: 'medium',
+                                        strictParsing: true,
+                                        UTC:true
+                                    }
+                                }"
+                                visible="{= ${glModel>/batchFldInd} === 'M' ? true: false}" />
+                            <HBox >
+                            <Input value="{dataModel>BatchQty}" type="Number" change="handleQuantityCheck"></Input>
+                            <Button text="{i18n>addSerial}" icon="sap-icon://numbered-text" class="sapUiSmallMarginBegin" press="onAddSerial" visible="{= ${glModel>/flag} === 'R' ? true: false}"/>
+                            </HBox>
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </content>
+        <footer>
+            <OverflowToolbar id="itemFooter">
+				<ToolbarSpacer/>
+                <Button text="{i18n>gr}" icon="sap-icon://inventory" press="onCreateGR" type="Emphasized" />
+            </OverflowToolbar>
+        </footer>
+    </Page>
+</mvc:View>
